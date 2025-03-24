@@ -10,8 +10,8 @@ services:
       - ./php/www.conf:/usr/local/etc/php-fpm.d/www.conf
     working_dir: /var/www/html
     depends_on: 
-      - db
-  db:
+      - db_pemweb
+  db_pemweb:
     image: mariadb:10.2
     container_name: db
     restart: unless-stopped
