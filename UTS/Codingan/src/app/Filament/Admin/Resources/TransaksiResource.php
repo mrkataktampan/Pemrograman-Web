@@ -104,11 +104,6 @@ class TransaksiResource extends Resource
             ]);
     }
 
-    public static function canViewAny(): bool
-    {
-        return auth()->check() && auth()->user()->hasAnyRole(['admin', 'customer']);
-    }
-
     public static function getRelations(): array
     {
         return [
@@ -124,5 +119,4 @@ class TransaksiResource extends Resource
             'edit' => Pages\EditTransaksi::route('/{record}/edit'),
         ];
     }
-    
 }
