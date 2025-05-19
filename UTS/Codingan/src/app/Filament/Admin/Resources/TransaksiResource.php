@@ -42,15 +42,16 @@ class TransaksiResource extends Resource
                     ->required(),
 
                 TextInput::make('jumlah')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1)
-                    ->default(1)
-                    ->maxValue(function ($get) {
-                        $kendaraan = Kendaraan::find($get('kendaraan_id'));
-                        return $kendaraan ? $kendaraan->stok : 1;
-                    })
-                    ->reactive(),
+                ->numeric()
+                ->required()
+                ->default(1)
+                ->minValue(1)
+                ->maxValue(function ($get) {
+                    $kendaraan = \App\Models\Kendaraan::find($get('kendaraan_id'));
+                    return $kendaraan ? $kendaraan->stok : 1;
+                })
+                ->reactive()
+                ->dehydrated(),
 
                 TextInput::make('total_harga')
                     ->numeric()
@@ -103,6 +104,11 @@ class TransaksiResource extends Resource
             ]);
     }
 
+    public static function canViewAny(): bool
+    {
+        return auth()->check() && auth()->user()->hasAnyRole(['admin', 'customer']);
+    }
+
     public static function getRelations(): array
     {
         return [
@@ -118,4 +124,5 @@ class TransaksiResource extends Resource
             'edit' => Pages\EditTransaksi::route('/{record}/edit'),
         ];
     }
+    
 }

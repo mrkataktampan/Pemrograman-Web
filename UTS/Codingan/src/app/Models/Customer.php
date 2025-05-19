@@ -14,4 +14,9 @@ class Customer extends Model
         'telepon',
         'alamat',
     ];
+
+    public function customer()
+    {
+        return $this->hasOne(\App\Models\Customer::class, 'email', 'email');
+    }
 }

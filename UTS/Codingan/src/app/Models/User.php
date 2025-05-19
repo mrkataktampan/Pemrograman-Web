@@ -43,6 +43,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      *
      * @return array<string, string>
      */
+    public function customer()
+    {
+        return $this->hasOne(\App\Models\Customer::class);
+    }
+
     protected function casts(): array
     {
         return [
