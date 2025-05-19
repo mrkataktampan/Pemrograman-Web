@@ -23,22 +23,28 @@ class Transaksi extends Model
                 throw new \Exception('Kendaraan tidak ditemukan.');
             }
 
-            if ($kendaraan->stok < $transaksi->jumlah) {
-                throw new \Exception('Stok kendaraan tidak mencukupi.');
+            // Pastikan jumlah valid
+            if ($transaksi->jumlah < 1) {
+                throw new \Exception('Jumlah pembelian minimal 1.');
             }
 
+            // Cek stok cukup
+            if ($kendaraan->stok < $transaksi->jumlah) {
+                throw new \Exception("Stok tidak mencukupi. Tersisa {$kendaraan->stok} unit.");
+            }
+
+            // Kurangi stok sesuai jumlah
             $kendaraan->stok -= $transaksi->jumlah;
 
+            // Update status jika stok habis
             if ($kendaraan->stok <= 0) {
                 $kendaraan->status = 'Sold Out';
             }
 
             $kendaraan->save();
 
-            // Hitung total harga otomatis jika belum diisi
-            if (empty($transaksi->total_harga)) {
-                $transaksi->total_harga = $kendaraan->harga * $transaksi->jumlah;
-            }
+            // Hitung total harga
+            $transaksi->total_harga = $kendaraan->harga * $transaksi->jumlah;
         });
     }
 
