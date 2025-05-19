@@ -2,21 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Kendaraan extends Model
 {
     use HasFactory;
-    protected $table = 'kendaraans';
     protected $fillable = [
         'nama',
-        'merk',
+        'merek',
         'tipe',
         'tahun',
-        'warna',
         'harga',
         'stok',
-        'deskripsi',
+        'status',
     ];
+
+    public function transaksis()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
+
 }

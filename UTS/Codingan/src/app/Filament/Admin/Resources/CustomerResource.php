@@ -2,9 +2,9 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\KendaraanResource\Pages;
-use App\Filament\Admin\Resources\KendaraanResource\RelationManagers;
-use App\Models\Kendaraan;
+use App\Filament\Admin\Resources\CustomerResource\Pages;
+use App\Filament\Admin\Resources\CustomerResource\RelationManagers;
+use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class KendaraanResource extends Resource
+class CustomerResource extends Resource
 {
-    protected static ?string $model = Kendaraan::class;
+    protected static ?string $model = Customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -26,23 +26,16 @@ class KendaraanResource extends Resource
                 Forms\Components\TextInput::make('nama')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('merek')
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('tipe')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('tahun')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('harga')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('stok')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
+                Forms\Components\TextInput::make('telepon')
+                    ->tel()
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\Textarea::make('alamat')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -52,20 +45,10 @@ class KendaraanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('merek')
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tipe')
+                Tables\Columns\TextColumn::make('telepon')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tahun')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('harga')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('stok')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -98,9 +81,9 @@ class KendaraanResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListKendaraans::route('/'),
-            'create' => Pages\CreateKendaraan::route('/create'),
-            'edit' => Pages\EditKendaraan::route('/{record}/edit'),
+            'index' => Pages\ListCustomers::route('/'),
+            'create' => Pages\CreateCustomer::route('/create'),
+            'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }
 }

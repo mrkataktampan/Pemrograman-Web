@@ -9,15 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('kendaraan_id')->constrained()->onDelete('cascade');
-            $table->integer('jumlah');
-            $table->decimal('total_harga', 15, 2);
-            $table->timestamp('tanggal_transaksi')->useCurrent();
+            $table->integer('jumlah')->default(1);
+            $table->decimal('total_harga', 12, 2);
             $table->timestamps();
         });
     }

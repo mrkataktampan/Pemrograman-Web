@@ -5,8 +5,12 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\TransaksiResource\Pages;
 use App\Filament\Admin\Resources\TransaksiResource\RelationManagers;
 use App\Models\Transaksi;
+use App\Models\Kendaraan;
+use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,29 +26,43 @@ class TransaksiResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('kendaraan_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('jumlah')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('total_harga')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\DateTimePicker::make('tanggal_transaksi')
-                    ->required(),
-            ]);
+        ->schema([
+            Select::make('customer_id')
+                ->relationship('customer', 'nama')
+                ->required()
+                ->default(auth()->user()->id),
+
+            Select::make('kendaraan_id')
+                ->relationship('kendaraan', 'nama')
+                ->required(),
+
+            TextInput::make('jumlah')
+                ->required()
+                ->numeric()
+                ->default(1)
+                ->minValue(1)
+                ->maxValue(function ($get) {
+                    $kendaraan = Kendaraan::find($get('kendaraan_id'));
+                    return $kendaraan ? $kendaraan->stok : 1;
+                }),
+
+            TextInput::make('total_harga')
+                ->numeric()
+                ->disabled()       // agar user tidak bisa ubah
+                ->dehydrated()     // tetap dikirim ke backend
+                ->required()
+                ->default(function ($get) {
+                    $kendaraan = Kendaraan::find($get('kendaraan_id'));
+                    return $kendaraan ? $kendaraan->harga * $get('jumlah') : 0;
+                }),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('customer_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kendaraan_id')
@@ -55,9 +73,6 @@ class TransaksiResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_harga')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tanggal_transaksi')
-                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
