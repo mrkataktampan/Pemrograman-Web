@@ -2,7 +2,7 @@
 title Use Case Diagram Sistem Manajemen Data Kendaraan
 
 actor Admin
-actor Pembeli
+actor Customer
 
 package "Sistem Manajemen Data Kendaraan" {
   
@@ -19,8 +19,8 @@ Admin --> UC1
 Admin --> UC2
 Admin --> UC3
 
-Pembeli --> UC4
-Pembeli --> UC5
-Pembeli --> UC6
+Customer --> UC4
+Customer --> UC5
+Customer --> UC6
 
 @enduml

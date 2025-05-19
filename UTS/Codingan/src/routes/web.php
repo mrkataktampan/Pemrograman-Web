@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\ShowHomePage;
 use App\Http\Controllers\User\KendaraanController;
 use App\Http\Controllers\User\TransaksiController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,7 @@ Livewire::setScriptRoute(function ($handle) {
 /*
 / END
 */
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', ShowHomePage::class)->name('home');

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('merek');
             $table->string('tipe');
-            $table->integer('tahun');
+            $table->string('tahun');
             $table->decimal('harga', 12, 2);
             $table->integer('stok');
             $table->enum('status', ['Tersedia', 'Sold Out'])->default('Tersedia');

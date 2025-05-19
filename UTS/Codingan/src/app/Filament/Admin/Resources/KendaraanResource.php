@@ -34,7 +34,7 @@ class KendaraanResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tahun')
                     ->required()
-                    ->numeric(),
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('harga')
                     ->required()
                     ->numeric(),
@@ -57,8 +57,7 @@ class KendaraanResource extends Resource
                 Tables\Columns\TextColumn::make('tipe')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun')
-                    ->numeric()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('harga')
                     ->numeric()
                     ->sortable(),
