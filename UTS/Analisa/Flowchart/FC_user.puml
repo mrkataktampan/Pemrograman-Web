@@ -1,0 +1,28 @@
+@startuml
+title Flowchart Pengguna (User) - Pembelian dan Riwayat
+
+start
+:Login sebagai User;
+:Melihat daftar kendaraan yang tersedia;
+:Pilih kendaraan;
+
+:Tampilkan detail kendaraan dan tombol "Beli";
+
+if ("Klik tombol Beli?") then (Ya)
+    :Kurangi stok (stok -= jumlah);
+    if ("Stok == 0") then (Ya)
+        :Set status kendaraan = 'Sold Out';
+    endif
+    :Catat transaksi ke tabel transaksi;
+else (Tidak)
+    note right
+    Pembeli hanya dapat melihat
+    informasi kendaraan
+    end note
+endif
+
+:User memilih menu "Riwayat Pembelian";
+:Tampilkan daftar transaksi milik user;
+
+stop
+@enduml
